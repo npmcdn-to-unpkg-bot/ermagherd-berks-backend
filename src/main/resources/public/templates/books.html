@@ -1,0 +1,86 @@
+<div class="container">
+    <h1>Books</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Number of books</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="book in books">
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.count }}</td>
+            <td>
+                <span class="glyphicon glyphicon-trash pointer delete-button" ng-click="selectBookToDelete(book)"
+                      aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-pencil pointer edit-button" ng-click="editBook(book)"
+                      aria-hidden="true"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="button" id="new-button" ng-click="newBook()" class="btn btn-primary btn-lg">
+        New book
+    </button>
+</div>
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Book</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input ng-model="selectedBook.title" class="form-control" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input ng-model="selectedBook.author" class="form-control" id="author">
+                    </div>
+                    <div class="form-group">
+                        <label for="isbn">ISBN</label>
+                        <input ng-model="selectedBook.isbn" class="form-control" id="isbn">
+                    </div>
+                    <div class="form-group">
+                        <label for="number">Number of books</label>
+                        <input ng-model="selectedBook.count" class="form-control" type="number" id="number">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" ng-click="saveBook()" id="save-button" class="btn btn-primary">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="myModalLabel2">Delete book</h2>
+            </div>
+            <div class="modal-body">
+                This will delete the book permanently, are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Do not delete</button>
+                <button type="button" ng-click="deleteBook()" id="delete-confirm" class="btn btn-danger">Yes, delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

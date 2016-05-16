@@ -27,5 +27,8 @@ public class Member {
     @Column(name = "password")
     @JsonProperty
     private String password;
+    @JsonProperty
+    @Column(name = "type")
+    private MemberType memberType;
 
 }

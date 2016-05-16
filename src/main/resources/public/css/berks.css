@@ -1,0 +1,11 @@
+body {
+    padding-top: 70px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+table.auto {
+    table-layout:auto;
+}
