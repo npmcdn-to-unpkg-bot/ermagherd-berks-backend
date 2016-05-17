@@ -18,8 +18,10 @@
             <td class="date">{{ borrowing.timeOfBorrowing }}</td>
             <td class="date">{{ borrowing.deadline }}</td>
             <td>
-                <span class="glyphicon glyphicon-repeat pointer delete-button" ng-click="selectBorrowingToDelete(borrowing)" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-pencil pointer edit-button"  ng-click="editBorrowing(borrowing)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-repeat pointer delete-button"
+                      ng-click="selectBorrowingToDelete(borrowing)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-pencil pointer edit-button" ng-click="editBorrowing(borrowing)"
+                      aria-hidden="true"></span>
             </td>
         </tr>
         </tbody>
@@ -32,32 +34,43 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title" id="myModalLabel">Borrowing</h4>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="form-group">
                         <label for="member">Member</label>
-                        <select class="form-control" id="member">
+                        <select class="form-control" ng-model="selectedBorrowing.memberId" id="member">
                             <option ng-repeat="member in members" value="{{member.id}}">{{member.email}}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="book">Book</label>
-                        <select class="form-control" id="book">
+                        <select class="form-control" ng-model="selectedBorrowing.bookId" id="book">
                             <option ng-repeat="book in books" value="{{book.id}}">{{book.title}}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="expiration-date">Expiration date</label>
-                        <input class="form-control" id="expiration-date">
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' ng-model="selectedBorrowing.expirationDate" id="expiration-date" class="form-control"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker1').datetimepicker();
+                            });
+                        </script>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="save-button">Save changes</button>
+                <button type="button" class="btn btn-primary" ng-click="saveBorrowing()" id="save-button">Save changes</button>
             </div>
         </div>
     </div>
@@ -66,15 +79,20 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h2 class="modal-title" id="myModalLabel2">Return book</h2>
             </div>
             <div class="modal-body">
                 Are you sure that this book was returned to the library?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No, the book is still at the borrower</button>
-                <button type="button" id="delete-confirm" ng-click="deleteBorrowing()" class="btn btn-primary">Yes, the book was returned to the library</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No, the book is still at the
+                    borrower
+                </button>
+                <button type="button" id="delete-confirm" ng-click="deleteBorrowing()" class="btn btn-primary">Yes, the
+                    book was returned to the library
+                </button>
             </div>
         </div>
     </div>

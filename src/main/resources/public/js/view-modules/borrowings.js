@@ -58,7 +58,7 @@ function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, Members
         refreshBackendData();
     };
 
-    $scope.saveBorrowing = function (email, password, borrowingType) {
+    $scope.saveBorrowing = function () {
         console.log("Saving borrowing ", $scope.selectedBorrowing);
         BorrowingsEndpoint.createBorrowingUsingPOST({borrowing: $scope.selectedBorrowing}).then(function () {
             console.log("Saved borrowing.");

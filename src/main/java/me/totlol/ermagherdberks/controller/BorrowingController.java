@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import me.totlol.ermagherdberks.controller.jsonobject.BorrowingJsonObject;
 import me.totlol.ermagherdberks.entity.Member;
 import me.totlol.ermagherdberks.service.BorrowingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.List;
 @RequestMapping("api/borrowings")
 @RestController
 public class BorrowingController {
+
+    private static final Logger log = LoggerFactory.getLogger(BorrowingController.class);
 
     @Autowired
     public BorrowingService borrowingService;
@@ -34,7 +38,7 @@ public class BorrowingController {
 
     @RequestMapping(method = RequestMethod.POST)
     public BorrowingJsonObject createBorrowing(@RequestBody BorrowingJsonObject borrowing) {
-        System.out.println("Creating borrowing " + borrowing);
+        log.info("Creating borrowing " + borrowing);
         return borrowing;
     }
 
