@@ -31,6 +31,11 @@ public class BorrowingController {
         return Lists.transform(borrowingService.findAllBorrowings(), BorrowingJsonObject::new); // TODO access control
     }
 
+    @RequestMapping(value = "me", method = RequestMethod.GET)
+    public List<BorrowingJsonObject> getMyBorrowings() {
+        return Lists.transform(borrowingService.findMyBorrowings(), BorrowingJsonObject::new); // TODO access control
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public BorrowingJsonObject getBorrowing(@PathVariable("id") Long id) {
         return new BorrowingJsonObject(borrowingService.findBorrowingById(id));
@@ -39,6 +44,7 @@ public class BorrowingController {
     @RequestMapping(method = RequestMethod.POST)
     public BorrowingJsonObject createBorrowing(@RequestBody BorrowingJsonObject borrowing) {
         log.info("Creating borrowing " + borrowing);
+        borrowingService.borrowBook(borrowing.getBookId(), borrowing.getMemberId(), borrowing.getDeadline());
         return borrowing;
     }
 

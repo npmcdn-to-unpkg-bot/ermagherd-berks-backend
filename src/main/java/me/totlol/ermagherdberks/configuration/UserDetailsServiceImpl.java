@@ -29,8 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException("User " + username + " not found.");
         }
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(1);
-        grantedAuthorities.add(new SimpleGrantedAuthority(member.getMemberType().name()));
-        return new User(member.getEmail(), member.getPassword(), grantedAuthorities);
+        return memberRepository.findByEmail(username);
     }
 }

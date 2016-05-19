@@ -2,8 +2,14 @@ package me.totlol.ermagherdberks.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Márton Tóth
@@ -13,7 +19,7 @@ import javax.persistence.*;
     @UniqueConstraint(name = "unique_email", columnNames = "email")
 })
 @Entity
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @Column(name = "id")
@@ -30,5 +36,37 @@ public class Member {
     @JsonProperty
     @Column(name = "type")
     private MemberType memberType;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>(1);
+        authorities.add(new SimpleGrantedAuthority(memberType.name()));
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

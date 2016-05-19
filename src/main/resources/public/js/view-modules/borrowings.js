@@ -60,6 +60,7 @@ function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, Members
 
     $scope.saveBorrowing = function () {
         console.log("Saving borrowing ", $scope.selectedBorrowing);
+        $scope.selectedBorrowing.deadline = moment($('#expiration-date').val()).unix();
         BorrowingsEndpoint.createBorrowingUsingPOST({borrowing: $scope.selectedBorrowing}).then(function () {
             console.log("Saved borrowing.");
             refreshBackendData();
