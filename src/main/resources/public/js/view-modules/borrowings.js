@@ -51,8 +51,8 @@ function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, Members
                             $scope.borrowings = borrowings.obj;
                             $scope.borrowings.forEach(function (borrowing, i) {
                                 borrowing.expired = borrowing.deadline < new Date().getTime();
-                                borrowing.deadlineText = moment(borrowing.deadline).format('YYYY-MM-D hh:mm:ss');
-                                borrowing.timeOfBorrowingText = moment(borrowing.timeOfBorrowing).format('YYYY-MM-D hh:mm:ss');
+                                borrowing.deadlineText = moment(borrowing.deadline).format('YYYY-MM-D HH:mm:ss');
+                                borrowing.timeOfBorrowingText = moment(borrowing.timeOfBorrowing).format('YYYY-MM-D HH:mm:ss');
                             })
                         });
                     });
