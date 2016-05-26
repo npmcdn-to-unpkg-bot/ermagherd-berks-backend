@@ -18,9 +18,10 @@ angular.module('app', ['ngComponentRouter', 'landing', 'members', 'borrowings', 
     })
     .directive('navbar', function () {
         return {
-            templateUrl: '/templates/navbar.html'
+            templateUrl: '/templates/navbar.html',
+            controller: ["$scope", "Authority", function ($scope, Authority) {
+                $scope.memberType = Authority.memberType;
+            }]
         }
-    })
-
-;
+    });
 

@@ -7,16 +7,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Márton Tóth
  */
 @Data
 @Table(name = "member", uniqueConstraints = {
-    @UniqueConstraint(name = "unique_email", columnNames = "email")
+        @UniqueConstraint(name = "unique_email", columnNames = "email")
 })
 @Entity
 public class Member implements UserDetails {
@@ -40,7 +39,14 @@ public class Member implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>(1);
-        authorities.add(new SimpleGrantedAuthority(memberType.name()));
+        if (memberType == MemberType.ADMIN) {
+            authorities.addAll(Arrays
+                    .stream(MemberType.values())
+                    .map(m -> new SimpleGrantedAuthority("ROLE_" + m.toString()))
+                    .collect(Collectors.toList()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + memberType.name()));
+        }
         return authorities;
     }
 

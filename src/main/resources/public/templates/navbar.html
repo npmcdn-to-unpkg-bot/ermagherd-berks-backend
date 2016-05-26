@@ -12,11 +12,11 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a ng-link="['Borrowings']">Borrowings</a></li>
-                <li><a ng-link="['Books']">Books</a></li>
-                <li><a ng-link="['Members']">Members</a></li>
+                <li ng-if="memberType == 'ADMIN'"><a ng-link="['Books']">Books</a></li>
+                <li ng-if="memberType == 'ADMIN'"><a ng-link="['Members']">Members</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="logout">Logout</a></li>
+                <!--<li><a href="logout">Logout</a></li>-->
             </ul>
         </div><!--/.nav-collapse -->
     </div>

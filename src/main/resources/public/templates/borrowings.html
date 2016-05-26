@@ -4,29 +4,29 @@
         <thead>
         <tr>
             <th>Book</th>
-            <th>Member</th>
+            <th ng-if="memberType == 'ADMIN'" >Member</th>
             <th>Time of borrowing</th>
             <th>Expiration date</th>
-            <th>Action</th>
+            <th ng-if="memberType == 'ADMIN'" >Action</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr ng-repeat="borrowing in borrowings">
+        <tr ng-class="{danger: borrowing.expired}" ng-repeat="borrowing in borrowings">
             <td>{{ getBookById(borrowing.bookId).title }}</td>
-            <td>{{ getMemberById(borrowing.memberId).email }}</td>
-            <td class="date">{{ borrowing.timeOfBorrowing }}</td>
-            <td class="date">{{ borrowing.deadline }}</td>
-            <td>
+            <td ng-if="memberType == 'ADMIN'" >{{ borrowing.memberEmail || getMemberById(borrowing.memberId).email }}</td>
+            <td class="date">{{ borrowing.timeOfBorrowingText }}</td>
+            <td class="date">{{ borrowing.deadlineText }}</td>
+            <td ng-if="memberType == 'ADMIN'">
                 <span class="glyphicon glyphicon-repeat pointer delete-button"
                       ng-click="selectBorrowingToDelete(borrowing)" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-pencil pointer edit-button" ng-click="editBorrowing(borrowing)"
-                      aria-hidden="true"></span>
+                <!--<span class="glyphicon glyphicon-pencil pointer edit-button" ng-click="editBorrowing(borrowing)"-->
+                      <!--aria-hidden="true"></span>-->
             </td>
         </tr>
         </tbody>
     </table>
-    <button type="button" ng-click="newBorrowing()" class="btn btn-primary btn-lg" id="new-button">
+    <button ng-if="memberType == 'ADMIN'" type="button" ng-click="newBorrowing()" class="btn btn-primary btn-lg" id="new-button">
         New borrowing
     </button>
 </div>

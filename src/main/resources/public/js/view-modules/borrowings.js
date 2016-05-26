@@ -1,10 +1,10 @@
 angular.module('borrowings', [])
     .component('borrowingsComponent', {
         templateUrl: '/templates/borrowings.html',
-        controller: ['$scope', 'BorrowingsEndpoint', 'BooksEndpoint', 'MembersEndpoint', BorrowingsController]
+        controller: ['$scope', 'BorrowingsEndpoint', 'BooksEndpoint', 'MembersEndpoint', 'Authority', BorrowingsController]
     });
 
-function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, MembersEndpoint) {
+function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, MembersEndpoint, Authority) {
 
     $scope.selectedBorrowing = {
         id: null,
@@ -19,6 +19,7 @@ function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, Members
     $scope.members = [];
     $scope.books = [];
     $scope.borrowings = [];
+    $scope.memberType = Authority.memberType;
 
     $scope.getMemberById = function (memberId) {
         return $scope.members.filter(function (member) {
@@ -33,24 +34,51 @@ function BorrowingsController($scope, BorrowingsEndpoint, BooksEndpoint, Members
     };
 
     function refreshBackendData() {
-        MembersEndpoint.getMembersUsingGET().then(function (members) {
-            console.log("Retrieved members:", members.obj);
-            $scope.$apply(function () {
-                $scope.members = members.obj;
+        if (Authority.memberType == 'ADMIN') {
+            MembersEndpoint.getMembersUsingGET().then(function (members) {
+                console.log("Retrieved members:", members.obj);
+                $scope.$apply(function () {
+                    $scope.members = members.obj;
+                });
+                BooksEndpoint.getBooksUsingGET().then(function (books) {
+                    console.log("Retrieved books:", books.obj);
+                    $scope.$apply(function () {
+                        $scope.books = books.obj;
+                    });
+                    BorrowingsEndpoint.getBorrowingsUsingGET().then(function (borrowings) {
+                        console.log("Retrieved borrowings:", borrowings.obj);
+                        $scope.$apply(function () {
+                            $scope.borrowings = borrowings.obj;
+                            $scope.borrowings.forEach(function (borrowing, i) {
+                                borrowing.expired = borrowing.deadline < new Date().getTime();
+                                borrowing.deadlineText = moment(borrowing.deadline).format('YYYY-MM-D hh:mm:ss');
+                                borrowing.timeOfBorrowingText = moment(borrowing.timeOfBorrowing).format('YYYY-MM-D hh:mm:ss');
+                            })
+                        });
+                    });
+                });
             });
+        } else {
             BooksEndpoint.getBooksUsingGET().then(function (books) {
                 console.log("Retrieved books:", books.obj);
                 $scope.$apply(function () {
                     $scope.books = books.obj;
                 });
-                BorrowingsEndpoint.getBorrowingsUsingGET().then(function (borrowings) {
+                BorrowingsEndpoint.getMyBorrowingsUsingGET().then(function (borrowings) {
                     console.log("Retrieved borrowings:", borrowings.obj);
                     $scope.$apply(function () {
                         $scope.borrowings = borrowings.obj;
+                        $scope.borrowings.forEach(function (borrowing, i) {
+                            borrowing.memberEmail = Authority.email;
+                            borrowing.expired = borrowing.deadline < new Date().getTime();
+                            borrowing.deadlineText = moment(borrowing.deadline).format('YYYY-MM-D hh:mm:ss');
+                            borrowing.timeOfBorrowingText = moment(borrowing.timeOfBorrowing).format('YYYY-MM-D hh:mm:ss');
+                        })
                     });
                 });
             });
-        });
+
+        }
     }
 
     this.$routerOnActivate = function (next) {

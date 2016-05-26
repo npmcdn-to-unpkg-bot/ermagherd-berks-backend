@@ -1,10 +1,10 @@
 angular.module('books', [])
     .component('booksComponent', {
         templateUrl: '/templates/books.html',
-        controller: ['$scope', 'BooksEndpoint', BooksController]
+        controller: ['$scope', 'BooksEndpoint', 'Authority', BooksController]
     });
 
-function BooksController($scope, BooksEndpoint) {
+function BooksController($scope, BooksEndpoint, Authority) {
     
     // TODO get this stuff from the backend.
     $scope.bookTypes = ["MEMBER", "ADMIN"];
